@@ -1,14 +1,14 @@
-/// \file LiquidCrystal_PCF8574.cpp
+/// \file Tiny_LiquidCrystal_PCF8574.cpp
 /// \brief LiquidCrystal library with PCF8574 I2C adapter.
 ///
 /// \author Matthias Hertel, http://www.mathertel.de
 /// \copyright Copyright (c) 2019 by Matthias Hertel.
 ///
-/// ChangeLog see: LiquidCrystal_PCF8574.h
+/// ChangeLog see: Tiny_LiquidCrystal_PCF8574.h
 
-#include "LiquidCrystal_PCF8574.h"
+#include "Tiny_LiquidCrystal_PCF8574.h"
 
-#include <Wire.h>
+#include <TinyWireM.h>
 
 /// Definitions on how the PCF8574 is connected to the LCD
 
@@ -21,17 +21,17 @@
 
 // a nibble is a half Byte
 
-LiquidCrystal_PCF8574::LiquidCrystal_PCF8574(int i2cAddr)
+Tiny_LiquidCrystal_PCF8574::Tiny_LiquidCrystal_PCF8574(int i2cAddr)
 {
   _i2cAddr = i2cAddr;
   _backlight = 0;
 
   _entrymode = 0x02; // like Initializing by Internal Reset Circuit
   _displaycontrol = 0x04;
-} // LiquidCrystal_PCF8574
+} // Tiny_LiquidCrystal_PCF8574
 
 
-void LiquidCrystal_PCF8574::begin(int cols, int lines)
+void Tiny_LiquidCrystal_PCF8574::begin(int cols, int lines)
 {
   // _cols = cols ignored !
   _lines = lines;
@@ -43,7 +43,7 @@ void LiquidCrystal_PCF8574::begin(int cols, int lines)
   }
 
   // initializing the display
-  Wire.begin();
+  TinyWireM.begin();
   _write2Wire(0x00, LOW, false);
   delayMicroseconds(50000);
 
@@ -69,7 +69,7 @@ void LiquidCrystal_PCF8574::begin(int cols, int lines)
 } // begin()
 
 
-void LiquidCrystal_PCF8574::clear()
+void Tiny_LiquidCrystal_PCF8574::clear()
 {
   // Instruction: Clear display = 0x01
   _send(0x01);
@@ -77,13 +77,13 @@ void LiquidCrystal_PCF8574::clear()
 } // clear()
 
 
-void LiquidCrystal_PCF8574::init()
+void Tiny_LiquidCrystal_PCF8574::init()
 {
   clear();
 } // init()
 
 
-void LiquidCrystal_PCF8574::home()
+void Tiny_LiquidCrystal_PCF8574::home()
 {
   // Instruction: Return home = 0x02
   _send(0x02);
@@ -92,7 +92,7 @@ void LiquidCrystal_PCF8574::home()
 
 
 /// Set the cursor to a new position.
-void LiquidCrystal_PCF8574::setCursor(int col, int row)
+void Tiny_LiquidCrystal_PCF8574::setCursor(int col, int row)
 {
   int row_offsets[] = {0x00, 0x40, 0x14, 0x54};
   // Instruction: Set DDRAM address = 0x80
@@ -101,7 +101,7 @@ void LiquidCrystal_PCF8574::setCursor(int col, int row)
 
 
 // Turn the display on/off (quickly)
-void LiquidCrystal_PCF8574::noDisplay()
+void Tiny_LiquidCrystal_PCF8574::noDisplay()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol &= ~0x04; // display
@@ -109,7 +109,7 @@ void LiquidCrystal_PCF8574::noDisplay()
 } // noDisplay()
 
 
-void LiquidCrystal_PCF8574::display()
+void Tiny_LiquidCrystal_PCF8574::display()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol |= 0x04; // display
@@ -118,7 +118,7 @@ void LiquidCrystal_PCF8574::display()
 
 
 // Turns the underline cursor on/off
-void LiquidCrystal_PCF8574::cursor()
+void Tiny_LiquidCrystal_PCF8574::cursor()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol |= 0x02; // cursor
@@ -126,7 +126,7 @@ void LiquidCrystal_PCF8574::cursor()
 } // cursor()
 
 
-void LiquidCrystal_PCF8574::noCursor()
+void Tiny_LiquidCrystal_PCF8574::noCursor()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol &= ~0x02; // cursor
@@ -135,7 +135,7 @@ void LiquidCrystal_PCF8574::noCursor()
 
 
 // Turn on and off the blinking cursor
-void LiquidCrystal_PCF8574::blink()
+void Tiny_LiquidCrystal_PCF8574::blink()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol |= 0x01; // blink
@@ -143,7 +143,7 @@ void LiquidCrystal_PCF8574::blink()
 } // blink()
 
 
-void LiquidCrystal_PCF8574::noBlink()
+void Tiny_LiquidCrystal_PCF8574::noBlink()
 {
   // Instruction: Display on/off control = 0x08
   _displaycontrol &= ~0x01; // blink
@@ -152,7 +152,7 @@ void LiquidCrystal_PCF8574::noBlink()
 
 
 // These commands scroll the display without changing the RAM
-void LiquidCrystal_PCF8574::scrollDisplayLeft(void)
+void Tiny_LiquidCrystal_PCF8574::scrollDisplayLeft(void)
 {
   // Instruction: Cursor or display shift = 0x10
   // shift: 0x08, left: 0x00
@@ -160,7 +160,7 @@ void LiquidCrystal_PCF8574::scrollDisplayLeft(void)
 } // scrollDisplayLeft()
 
 
-void LiquidCrystal_PCF8574::scrollDisplayRight(void)
+void Tiny_LiquidCrystal_PCF8574::scrollDisplayRight(void)
 {
   // Instruction: Cursor or display shift = 0x10
   // shift: 0x08, right: 0x04
@@ -171,7 +171,7 @@ void LiquidCrystal_PCF8574::scrollDisplayRight(void)
 // == controlling the entrymode
 
 // This is for text that flows Left to Right
-void LiquidCrystal_PCF8574::leftToRight(void)
+void Tiny_LiquidCrystal_PCF8574::leftToRight(void)
 {
   // Instruction: Entry mode set, set increment/decrement =0x02
   _entrymode |= 0x02;
@@ -180,7 +180,7 @@ void LiquidCrystal_PCF8574::leftToRight(void)
 
 
 // This is for text that flows Right to Left
-void LiquidCrystal_PCF8574::rightToLeft(void)
+void Tiny_LiquidCrystal_PCF8574::rightToLeft(void)
 {
   // Instruction: Entry mode set, clear increment/decrement =0x02
   _entrymode &= ~0x02;
@@ -189,7 +189,7 @@ void LiquidCrystal_PCF8574::rightToLeft(void)
 
 
 // This will 'right justify' text from the cursor
-void LiquidCrystal_PCF8574::autoscroll(void)
+void Tiny_LiquidCrystal_PCF8574::autoscroll(void)
 {
   // Instruction: Entry mode set, set shift S=0x01
   _entrymode |= 0x01;
@@ -198,7 +198,7 @@ void LiquidCrystal_PCF8574::autoscroll(void)
 
 
 // This will 'left justify' text from the cursor
-void LiquidCrystal_PCF8574::noAutoscroll(void)
+void Tiny_LiquidCrystal_PCF8574::noAutoscroll(void)
 {
   // Instruction: Entry mode set, clear shift S=0x01
   _entrymode &= ~0x01;
@@ -209,7 +209,7 @@ void LiquidCrystal_PCF8574::noAutoscroll(void)
 /// Setting the brightness of the background display light.
 /// The backlight can be switched on and off.
 /// The current brightness is stored in the private _backlight variable to have it available for further data transfers.
-void LiquidCrystal_PCF8574::setBacklight(int brightness)
+void Tiny_LiquidCrystal_PCF8574::setBacklight(int brightness)
 {
   _backlight = brightness;
   // send no data but set the background-pin right;
@@ -219,7 +219,7 @@ void LiquidCrystal_PCF8574::setBacklight(int brightness)
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
-void LiquidCrystal_PCF8574::createChar(int location, int charmap[])
+void Tiny_LiquidCrystal_PCF8574::createChar(int location, int charmap[])
 {
   location &= 0x7; // we only have 8 locations 0-7
   // Set CGRAM address
@@ -231,7 +231,7 @@ void LiquidCrystal_PCF8574::createChar(int location, int charmap[])
 
 
 /* The write function is needed for derivation from the Print class. */
-inline size_t LiquidCrystal_PCF8574::write(uint8_t ch)
+inline size_t Tiny_LiquidCrystal_PCF8574::write(uint8_t ch)
 {
   _send(ch, true);
   return 1; // assume sucess
@@ -239,7 +239,7 @@ inline size_t LiquidCrystal_PCF8574::write(uint8_t ch)
 
 
 // write either command or data
-void LiquidCrystal_PCF8574::_send(int value, bool isData)
+void Tiny_LiquidCrystal_PCF8574::_send(int value, bool isData)
 {
   // write high 4 bits
   _sendNibble((value >> 4 & 0x0F), isData);
@@ -249,7 +249,7 @@ void LiquidCrystal_PCF8574::_send(int value, bool isData)
 
 
 // write a nibble / halfByte with handshake
-void LiquidCrystal_PCF8574::_sendNibble(int halfByte, bool isData)
+void Tiny_LiquidCrystal_PCF8574::_sendNibble(int halfByte, bool isData)
 {
   _write2Wire(halfByte, isData, true);
   delayMicroseconds(1); // enable pulse must be >450ns
@@ -261,7 +261,7 @@ void LiquidCrystal_PCF8574::_sendNibble(int halfByte, bool isData)
 // private function to change the PCF8674 pins to the given value
 // Note:
 // you may change this function what the display is attached to the PCF8574 in a different wiring.
-void LiquidCrystal_PCF8574::_write2Wire(int halfByte, bool isData, bool enable)
+void Tiny_LiquidCrystal_PCF8574::_write2Wire(int halfByte, bool isData, bool enable)
 {
   // map the given values to the hardware of the I2C schema
   int i2cData = halfByte << 4;
@@ -273,9 +273,9 @@ void LiquidCrystal_PCF8574::_write2Wire(int halfByte, bool isData, bool enable)
   if (_backlight > 0)
     i2cData |= PCF_BACKLIGHT;
 
-  Wire.beginTransmission(_i2cAddr);
-  Wire.write(i2cData);
-  Wire.endTransmission();
+  TinyWireM.beginTransmission(_i2cAddr);
+  TinyWireM.send(i2cData);
+  TinyWireM.endTransmission();
 } // write2Wire
 
 // The End.

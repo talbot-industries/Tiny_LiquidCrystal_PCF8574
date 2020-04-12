@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map for LiquidCrystal_PCF8574
+# Syntax Coloring Map for Tiny_LiquidCrystal_PCF8574
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-LiquidCrystal_PCF8574 KEYWORD1
+Tiny_LiquidCrystal_PCF8574 KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

@@ -1,6 +1,8 @@
-# Arduino Library for LiquidCrystal displays with I2C PCF8574 adapter
+# Arduino Library for LiquidCrystal displays with I2C PCF8574 adapter using TinyWireM
 
-A library for driving LiquidCrystal displays (LCD) by using the I2C bus and an PCF8574 I2C adapter.
+A library for driving LiquidCrystal displays (LCD) by using the I2C bus and an PCF8574 I2C adapter using TinyWireM.
+
+TinyWireM is used instead of the standard Wire library so that the library can be used on AtTiny85 chips
 
 There are modules that can be soldered or stacked to the display that offers a I2C interface for communication instead of the 8+ digital lines that are used to send data to the display.
 
